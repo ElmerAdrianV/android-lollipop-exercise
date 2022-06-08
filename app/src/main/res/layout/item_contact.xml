@@ -20,7 +20,9 @@
             android:id="@+id/ivProfile"
             android:layout_width="match_parent"
             android:layout_height="@dimen/grid_profile_height"
-            android:scaleType="centerCrop" />
+            android:transitionName="profile"
+            android:scaleType="centerCrop"
+            />
 
         <RelativeLayout
             android:layout_alignParentBottom="true"
@@ -30,7 +32,9 @@
             <View
                 android:id="@+id/vPalette"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" />
+                android:layout_height="match_parent"
+                android:transitionName="palette"
+                />
 
             <TextView
                 android:id="@+id/tvName"
@@ -38,7 +42,9 @@
                 android:layout_height="wrap_content"
                 android:layout_centerInParent="true"
                 android:textSize="@dimen/contact_text_size"
-                android:textColor="@android:color/black" />
+                android:textColor="@android:color/black"
+                android:transitionName="name"
+                />
         </RelativeLayout>
     </LinearLayout>
 </androidx.cardview.widget.CardView>

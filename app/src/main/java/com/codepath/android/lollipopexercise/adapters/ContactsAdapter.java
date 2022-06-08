@@ -13,6 +13,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.app.ActivityOptionsCompat;
 import androidx.palette.graphics.Palette;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -20,6 +21,7 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.CustomTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.codepath.android.lollipopexercise.R;
+import com.codepath.android.lollipopexercise.activities.ContactsActivity;
 import com.codepath.android.lollipopexercise.activities.DetailsActivity;
 import com.codepath.android.lollipopexercise.models.Contact;
 
@@ -108,7 +110,11 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.VH> {
                         Intent intent = new Intent(context, DetailsActivity.class);
                         intent.putExtra(DetailsActivity.EXTRA_CONTACT,contact);
                         // Pass contact object in the bundle and populate details activity.
-                        context.startActivity(intent);
+                        ActivityOptionsCompat options = ActivityOptionsCompat.
+                                makeSceneTransitionAnimation((Activity) context,(View) ivProfile,"profile");
+                        options.makeSceneTransitionAnimation((Activity) context,(View) tvName,"name");
+                        options.makeSceneTransitionAnimation((Activity) context,(View) vPalette,"palette");
+                        context.startActivity(intent, options.toBundle());
                     }
                 }
             });
