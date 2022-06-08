@@ -66,6 +66,9 @@ public class ContactsActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
                 // Do something here
+                contacts.remove(0);
+                mAdapter.notifyItemRemoved(0);
+                rvContacts.smoothScrollToPosition(0);
             }
         };
         Snackbar.make(rvContacts, R.string.snackbar_text, Snackbar.LENGTH_LONG)
