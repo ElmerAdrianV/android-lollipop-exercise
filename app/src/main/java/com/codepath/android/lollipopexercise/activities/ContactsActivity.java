@@ -59,7 +59,7 @@ public class ContactsActivity extends AppCompatActivity {
     }
 
     public void onComposeAction(MenuItem menuItem){
-        contacts.add(Contact.getRandomContact(this));
+        contacts.add(0,Contact.getRandomContact(this));
         mAdapter.notifyItemInserted(0);
         rvContacts.smoothScrollToPosition(0);
         View.OnClickListener myOnClickListener = new View.OnClickListener() {
@@ -68,7 +68,7 @@ public class ContactsActivity extends AppCompatActivity {
                 // Do something here
                 contacts.remove(0);
                 mAdapter.notifyItemRemoved(0);
-                rvContacts.smoothScrollToPosition(0);
+
             }
         };
         Snackbar.make(rvContacts, R.string.snackbar_text, Snackbar.LENGTH_LONG)

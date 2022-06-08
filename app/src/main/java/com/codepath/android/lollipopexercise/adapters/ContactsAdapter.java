@@ -3,15 +3,22 @@ package com.codepath.android.lollipopexercise.adapters;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.drawable.Drawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
+import androidx.palette.graphics.Palette;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.target.CustomTarget;
+import com.bumptech.glide.request.transition.Transition;
 import com.codepath.android.lollipopexercise.R;
 import com.codepath.android.lollipopexercise.activities.DetailsActivity;
 import com.codepath.android.lollipopexercise.models.Contact;
@@ -40,11 +47,35 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.VH> {
 
     // Display data at the specified position
     @Override
-    public void onBindViewHolder(VH holder, int position) {
-        Contact contact = mContacts.get(position);
+    public void onBindViewHolder(final VH holder, int position) {
+        final Contact contact = mContacts.get(position);
         holder.rootView.setTag(contact);
         holder.tvName.setText(contact.getName());
         Glide.with(mContext).load(contact.getThumbnailDrawable()).centerCrop().into(holder.ivProfile);
+        // Use Glide to get a callback with a Bitmap which can then
+        // be used to extract a vibrant color from the Palette.
+
+        // Define an asynchronous listener for image loading
+        CustomTarget<Bitmap> target = new CustomTarget<Bitmap>() {
+            @Override
+            public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
+                // TODO 1. Instruct Glide to load the bitmap into the holder.ivProfile profile image view
+                Glide.with(mContext).load(contact.getThumbnailDrawable()).centerCrop().into(holder.ivProfile);
+                //Glide.with(DetailsActivity.this).asBitmap().load(mContact.getThumbnailDrawable()).centerCrop().into(ivProfile);
+                // TODO 2. Use generate() method from the Palette API to get the vibrant color from the bitmap
+                // Set the result as the background color for holder.vPalette view containing the contact's name.
+                holder.vPalette.setBackgroundColor(Palette.generate(resource).getVibrantColor(0));
+
+            }
+
+            @Override
+            public void onLoadCleared(@Nullable Drawable placeholder) {
+                // can leave empty
+            }
+        };
+
+        // Instruct Glide to load the bitmap into the asynchronous target defined above
+        Glide.with(mContext).asBitmap().load(contact.getThumbnailDrawable()).centerCrop().into(target);
     }
 
     @Override
@@ -65,6 +96,7 @@ public class ContactsAdapter extends RecyclerView.Adapter<ContactsAdapter.VH> {
             ivProfile = (ImageView)itemView.findViewById(R.id.ivProfile);
             tvName = (TextView)itemView.findViewById(R.id.tvName);
             vPalette = itemView.findViewById(R.id.vPalette);
+
 
             // Navigate to contact details activity on click of card view.
             itemView.setOnClickListener(new View.OnClickListener() {
